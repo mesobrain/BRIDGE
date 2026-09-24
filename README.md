@@ -2,8 +2,14 @@
 # A Scalable Registration Framework for Terabyte-Scale Multi-Round Whole-Brain Microscopy
 BRIDGEA Scalable Registration Framework for Terabyte-Scale Multi-Round Whole-Brain MicroscopyThis is the official PyTorch implementation of BRIDGE, a deep learning framework designed for terabyte-scale volumetric microscopic image registration (e.g., VISoR imaging). BRIDGE combines SwinB-Net—a hybrid CNN-Transformer architecture with a hierarchical 3D Swin Transformer bottleneck and a sparse B-spline displacement head—to achieve sub-cellular precision while maintaining rigorous topological regularity.
 
+## Results
+# Experimental results of the dataset：
+<img width="1991" height="1868" alt="fig2" src="https://github.com/user-attachments/assets/d1cb7dab-8e2d-46f0-b172-2fdafc3fdb32" />
 
-📑 Citation
+The multi-round registration results of all brain cell nuclei
+<img width="1983" height="1847" alt="fig3" src="https://github.com/user-attachments/assets/3c53e587-90e4-4835-8e24-bc89550e7294" />
+
+## Citation
 ```bash
 @article{bridge2026,
   title={BRIDGE: Scalable and Topologically Plausible Whole-Brain Microscopic Image Registration via Hierarchical Hybrid Transformers},
@@ -13,11 +19,11 @@ BRIDGEA Scalable Registration Framework for Terabyte-Scale Multi-Round Whole-Bra
 }
 ```
 
-## 🛠️ Installation
+## Installation
 
 ```bash
 # Clone the repository
-git clone [https://github.com/YourUsername/BRIDGE.git](https://github.com/YourUsername/BRIDGE.git)
+git clone [[https://github.com/YourUsername/BRIDGE.git](https://github.com/YourUsername/BRIDGE.git)](https://github.com/mesobrain/BRIDGE)
 cd BRIDGE
 
 # Create conda environment
@@ -32,7 +38,7 @@ pip install -r requirements.txt
 
 ```
 
-## 🚀 Quick Start
+## Quick Start
 1.Multi-Stage Whole-Brain Registration
 Run patch-wise registration or evaluation on the cellular benchmark:
 ```bash
@@ -91,3 +97,7 @@ python Registration/Predict/Prediction.py \
     --data_dir "/path/to/Validation/WT2_R123_256_v2_nor" \
     --save_dir "/path/to/Output/predict_output"
 ```
+
+## Data and Pretrained Checkpoints
+Due to volume constraints, sample benchmarks and pretrained model checkpoints are archived on Zenodo:
+Download Link: Zenodo Repository (DOI: 10.5281/zenodo.22895154）
