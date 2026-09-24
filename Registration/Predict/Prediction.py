@@ -37,10 +37,10 @@ def get_pred_config():
         'downsample_stride': 0,
         'kernel_size': 5,
         'root': {
-            'model_root': r'Q:\WangH_lab\User\Debin\RawData\Registration\E2E_Reg\E2E_Reg\model\{}'.format(name),
-            'dataset_root': r'R:\DebinXia\RawData\Registration\MultiRoundDataset\WT1\label_v2\R123_label_v2',
-            'pred_data_root': r'Q:\WangH_lab\User\Debin\RawData\Registration\E2E_Reg\E2E_Reg\Dataset\Valiation\WT2_R123_256_v2_nor',
-            'pred_save_root': r'Q:\WangH_lab\User\Debin\RawData\Registration\E2E_Reg\E2E_Reg\Dataset\Valiation\{}'.format(name),
+            'model_root': r'Registration.model',
+            'dataset_root': r'',
+            'pred_data_root': r'',
+            'pred_save_root': r'',
         }
     }
     return config
