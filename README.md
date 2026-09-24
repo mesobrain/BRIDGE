@@ -1,2 +1,93 @@
 # BRIDGE
-A Scalable Registration Framework for Terabyte-Scale Multi-Round Whole-Brain Microscopy
+# A Scalable Registration Framework for Terabyte-Scale Multi-Round Whole-Brain Microscopy
+BRIDGEA Scalable Registration Framework for Terabyte-Scale Multi-Round Whole-Brain MicroscopyThis is the official PyTorch implementation of BRIDGE, a deep learning framework designed for terabyte-scale volumetric microscopic image registration (e.g., VISoR imaging). BRIDGE combines SwinB-Net—a hybrid CNN-Transformer architecture with a hierarchical 3D Swin Transformer bottleneck and a sparse B-spline displacement head—to achieve sub-cellular precision while maintaining rigorous topological regularity.
+
+
+📑 Citation
+```bash
+@article{bridge2026,
+  title={BRIDGE: Scalable and Topologically Plausible Whole-Brain Microscopic Image Registration via Hierarchical Hybrid Transformers},
+  author={Debin Xia, oE Key Laboratory of Brain-inspired Intelligent Perception and Cognition, Anhui Province Key Laboratory of Biomedical Imaging and Intelligent Processing, Institute of Artificial Intelligence of Hefei Comprehensive National Science Center, National Engineering Laboratory for Brain-inspired Intelligence Technology and Application, Hefei National Research Center for Physical Sciences at the Microscale, University of Science and Technology of China, Hefei, China},
+  journal={In submission},
+  year={2026}
+}
+```
+
+## 🛠️ Installation
+
+```bash
+# Clone the repository
+git clone [https://github.com/YourUsername/BRIDGE.git](https://github.com/YourUsername/BRIDGE.git)
+cd BRIDGE
+
+# Create conda environment
+conda create -n bridge python=3.9 -y
+conda activate bridge
+
+# Install PyTorch (adjust CUDA version to match your hardware)
+pip install torch torchvision --index-url [https://download.pytorch.org/whl/cu118](https://download.pytorch.org/whl/cu118)
+
+# Install dependencies
+pip install -r requirements.txt
+
+```
+
+## 🚀 Quick Start
+1.Multi-Stage Whole-Brain Registration
+Run patch-wise registration or evaluation on the cellular benchmark:
+```bash
+python BRIDGE.py \
+    --config configs/inference_benchmark.yaml \
+    --checkpoint checkpoints/swinb_net_best.pth \
+    --input_dir data/nuclei_validation \
+    --output_dir results/nuclei_eval
+```
+
+2. Whole-Brain Registration with multi-channels transform
+Run patch-wise registration or evaluation on the cellular benchmark which adding "other channel":
+```bash
+python BRIDGE.py \
+    --config configs/inference_benchmark.yaml \
+    --checkpoint checkpoints/swinb_net_best.pth \
+    --input_dir data/nuclei \
+    --output_dir results/nuclei_brain \
+    --other_channels data/channels
+```
+
+3. Model Training
+You can start training with the default configurations, or customize hyperparameters and paths via command-line arguments.
+```bash
+python BRIDGE.py \
+    --config configs/inference_benchmark.yaml \
+    --checkpoint checkpoints/swinb_net_best.pth \
+    --input_dir data/nuclei \
+    --output_dir results/nuclei_brain \
+    --other_channels data/channels
+```
+**Basic run (uses default relative paths and parameters):**
+```bash
+python Registration/Baser/Train.py \
+    --name "swinb_experiment_01" \
+    --device "cuda:0" \
+    --batch_size 2 \
+    --lr 0.0001 \
+    --epochs 500 \
+    --data_dir "/path/to/your/dataset" \
+    --model_dir "/path/to/save/checkpoints"
+```
+4. Model Evaluation
+Run inference on a pre-processed benchmark dataset, evaluating registration accuracy (NCC) and saving the warped images and affine fields.
+
+**Basic run (uses default relative paths and parameters):**
+```bash
+python Registration/Predict/Prediction.py \
+    --name "mcanet_bspl_down1_cnn7" \
+    --device "cuda:1" \
+    --model_epoch 100 \
+    --batch_size 2 \
+    --downsample_stride 1 \
+    --kernel_size 7 \
+    --model_dir "/path/to/save/checkpoints" \
+    --data_dir "/path/to/Validation/WT2_R123_256_v2_nor" \
+    --save_dir "/path/to/Output/predict_output"
+```
