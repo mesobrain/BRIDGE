@@ -313,71 +313,6 @@ def stage_reg(image_pairs: tuple, affine_bool=True, config=None):
     return aligned_image, pixel_grid
 
 
-def multi_stage_reg_after_sample(image_root_pairs: tuple, save_root, namas_list:list, config=None, target_shape=None):
-    """generate downsample image before registration"""
-    os.makedirs(save_root, exist_ok=True)
-    downsample_shape = []
-    fields_list = []
-    scale_factor_list = []
-    for name_i, nama in enumerate(namas_list):
-        print('====== Aligning Image {} ====='.format(nama))
-        st = time.time()
-        if name_i <len(namas_list)-1:
-            affine_bool = True
-        else:
-            affine_bool = False
-        scales_list = []
-        fixed_image = tifffile.imread(os.path.join(image_root_pairs[0], nama))
-        moving_image = tifffile.imread(os.path.join(image_root_pairs[1], nama))
-        for i in range(len(downsample_shape)):
-            scale = [fixed_image.shape[j] / downsample_shape[i][j] for j in range(len(fixed_image.shape))][::-1]
-            scales_list.append(scale)
-        displacement_field = field_transformer(fields_list, scales_list)
-
-        init_moving_image = sitk.Resample(sitk.GetImageFromArray(moving_image),
-                                                                 [i for i in fixed_image.shape][::-1],
-                                          displacement_field, sitk.sitkLinear)
-        init_moving_image = sitk.GetArrayFromImage(init_moving_image)
-        downsample_shape.append(fixed_image.shape)
-        aligned_image, field = stage_reg((fixed_image, init_moving_image), affine_bool=affine_bool, config=config)
-
-        # test
-        save_bool = True
-        if save_bool:
-            os.makedirs(os.path.join(save_root, nama), exist_ok=True)
-            tifffile.imwrite(os.path.join(save_root, 'fixed_{}'.format(nama)), fixed_image, compression='lzw')
-            tifffile.imwrite(os.path.join(save_root, 'moving_{}'.format(nama)), moving_image, compression='lzw')
-            tifffile.imwrite(os.path.join(save_root, 'init_moving_{}'.format(nama)), init_moving_image, compression='lzw')
-            tifffile.imwrite(os.path.join(save_root, 'align_moving_{}'.format(nama)), aligned_image, compression='lzw')
-        fields_list.append(field)
-        if len(fields_list)>=2:
-            scales_list = []
-            for i in range(len(downsample_shape)):
-                scale = [fixed_image.shape[j] / downsample_shape[i][j] for j in range(len(fixed_image.shape))][::-1]
-                scales_list.append(scale)
-            displacement_field = field_transformer(fields_list, scales_list)
-            field = sitk.TransformToDisplacementField(displacement_field,
-                                                      size=list(fixed_image.shape)[::-1], )
-            # print(field.GetSize())
-            sitk.WriteImage(field, os.path.join(save_root, 'field_{}.mha'.format(nama)))
-        print('Aligning Image {} test {}s'.format(nama, time.time() - st))
-        # if target_shape is None:
-        target_shape = fixed_image.shape
-        del fixed_image, moving_image, init_moving_image, aligned_image
-        gc.collect()
-
-    scales_list = []
-    for i in range(len(downsample_shape)):
-        scale = [target_shape[j] / downsample_shape[i][j] for j in range(len(target_shape))][::-1]
-        scales_list.append(scale)
-
-    displacement_field = field_transformer(fields_list, scales_list)
-    field = sitk.TransformToDisplacementField(displacement_field,
-                                              size=list(target_shape)[::-1],)
-    # print(field.GetSize())
-    sitk.WriteImage(field, os.path.join(save_root, 'field.mha'))
-
-
 def multi_stage_reg_with_sample(image_root_pairs: tuple, save_root, downsample_list:list, config=None, target_shape=None,
                                 moving_path_list:list=None, data_image_shape=(64, 256, 256), other_channels_paths=None):
     os.makedirs(save_root, exist_ok=True)
@@ -466,37 +401,43 @@ def multi_stage_reg_with_sample(image_root_pairs: tuple, save_root, downsample_l
         gc.collect()
 
 
+iimport argparse
+
 if __name__ == '__main__':
-    root_patch_pairs = (
-        r'Q:\WangH_lab\User\Debin\RawData\Registration\E2E_Reg\E2E_Reg\Atlas_Data\Brain\WT5.tif',
-        r'Q:\WangH_lab\User\Debin\RawData\Registration\E2E_Reg\E2E_Reg\Atlas_Data\Brain\WT2.tif'
+    parser = argparse.ArgumentParser(description="Multi-stage Whole Brain Registration pipeline")
+    
+    # 定义命令行参数
+    parser.add_argument('--fixed', type=str, 
+                        default=r'./data/Atlas_Data/WT5.tif', 
+                        help='Path to the fixed/target image volume.')
+    parser.add_argument('--moving', type=str, 
+                        default=r'./data/Atlas_Data/WT2.tif', 
+                        help='Path to the moving/source image volume.')
+    parser.add_argument('--save_dir', type=str, 
+                        default=r'./results/WT2_Reg', 
+                        help='Directory to save registration results.')
+    parser.add_argument('--downsample_list', type=float, nargs='+', 
+                        default=[0, 0.25, 1], 
+                        help='List of downsampling factors for multi-stage registration.')
+    parser.add_argument('--other_channels', type=str, nargs='*', 
+                        default=[], 
+                        help='Paths to other multi-round channels to be warped.')
+
+    # 解析参数
+    args = parser.parse_args()
+
+    # 组装为原函数的参数格式
+    root_patch_pairs = (args.fixed, args.moving)
+    save_root = args.save_dir
+    downsample_list = args.downsample_list
+    other_channels_paths = args.other_channels
+
+    print(f"Starting registration...\nFixed: {root_patch_pairs[0]}\nMoving: {root_patch_pairs[1]}")
+    
+    # 调用你的核心函数
+    multi_stage_reg_with_sample(
+        root_patch_pairs, 
+        save_root, 
+        downsample_list, 
+        other_channels_paths=other_channels_paths
     )
-    downsample_list = [0, 1]
-    save_root = r'Q:\WangH_lab\User\Debin\RawData\Registration\E2E_Reg\E2E_Reg\Atlas_Data\Brain\WT2_Reg'
-    other_channels_paths = [
-        # r'Q:\WangH_lab\User\Debin\RawData\Registration\E2E_Reg\E2E_Reg\MultiRoundData\R2\R2_402nm_10X.tif',
-    ]
-    multi_stage_reg_with_sample(root_patch_pairs, save_root, downsample_list, other_channels_paths=other_channels_paths)
-
-    image_root_pairs = [
-        r'Q:\WangH_lab\User\Debin\RawData\Registration\E2E_Reg\Raw\WT2\R1_4.0_Downsample',
-        r'Q:\WangH_lab\User\Debin\RawData\Registration\E2E_Reg\Raw\WT2\R2_4.0_Downsample'
-    ]
-    names_list = ['image_mapping.tif', 'image_0.0625.tif', 'image_0.125.tif', 'image_0.25.tif', 'image_1.0.tif']
-    save_root = r'Q:\WangH_lab\User\Debin\RawData\Registration\E2E_Reg\Raw\WT2\R2_aligned_2'
-    # multi_stage_reg_after_sample(image_root_pairs, save_root, names_list)
-
-
-    # 图谱
-    name_lists = ['{:03d}'.format(i) for i in range(1, 52)]
-    for name in tqdm(name_lists):
-        # print(name)
-        root_patch_pairs = (
-            r'Q:\WangH_lab\BML_data\CellTypeMap\Mouse\MouseBrain_FiveGenes_TwoRounds_202608\20260814_WJY_MHW_WT5_R1_1\Reconstruction\SliceImage\4.0\MHW_WT5_1_{}_405nm_10X.tif'.format(name),
-            r'Q:\WangH_lab\BML_data\CellTypeMap\Mouse\MouseBrain_FiveGenes_TwoRounds_202608\20260821_WJY_MHW_WT5_R2_1\Reconstruction\SliceImage\4.0\MHW_WT5_R5_{}_405nm_10X.tif'.format(name),
-        )
-        downsample_list = [0, 0.125, 0.25, 0.5, 1]
-        save_root = r'Q:\WangH_lab\BML_data\CellTypeMap\Mouse\MouseBrain_FiveGenes_TwoRounds_202608\20260821_WJY_MHW_WT5_R2_1\Reconstruction\SliceImage\4.0_aligned'
-        other_channels_paths = [
-            r'Q:\WangH_lab\BML_data\CellTypeMap\Mouse\MouseBrain_FiveGenes_TwoRounds_202608\20260821_WJY_MHW_WT5_R2_1\Reconstruction\SliceImage\4.0\MHW_WT5_R5_{}_640nm_10X.tif'.format(name), ]
-        # multi_stage_reg_with_sample(root_patch_pairs, save_root, downsample_list, other_channels_paths=other_channels_paths)
