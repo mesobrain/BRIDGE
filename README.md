@@ -4,10 +4,10 @@ BRIDGEA Scalable Registration Framework for Terabyte-Scale Multi-Round Whole-Bra
 
 ## Results
 # Experimental results of the dataset：
-<img width="1991" height="1868" alt="fig2" src="https://github.com/user-attachments/assets/d1cb7dab-8e2d-46f0-b172-2fdafc3fdb32" />
+<img width="1200" height="1100" alt="fig2" src="https://github.com/user-attachments/assets/d1cb7dab-8e2d-46f0-b172-2fdafc3fdb32" />
 
 The multi-round registration results of all brain cell nuclei
-<img width="1983" height="1847" alt="fig3" src="https://github.com/user-attachments/assets/3c53e587-90e4-4835-8e24-bc89550e7294" />
+<img width="1200" height="1100" alt="fig3" src="https://github.com/user-attachments/assets/3c53e587-90e4-4835-8e24-bc89550e7294" />
 
 ## Citation
 ```bash
