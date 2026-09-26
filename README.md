@@ -100,4 +100,4 @@ python Registration/Predict/Prediction.py \
 
 ## Data and Pretrained Checkpoints
 Due to volume constraints, sample benchmarks and pretrained model checkpoints are archived on Zenodo:
-Download Link: Zenodo Repository (DOI: 10.5281/zenodo.22895154）
+Download Link: Zenodo Repository (DOI: [10.5281/zenodo.22895154](https://zenodo.org/records/22895154))
