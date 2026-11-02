@@ -9,6 +9,10 @@ BRIDGEA Scalable Registration Framework for Terabyte-Scale Multi-Round Whole-Bra
 The multi-round registration results of all brain cell nuclei
 <img width="1200" height="1100" alt="fig3" src="https://github.com/user-attachments/assets/3c53e587-90e4-4835-8e24-bc89550e7294" />
 
+The table for calculating time is as follows
+<img width="624" height="164" alt="calc_tabel" src="https://github.com/user-attachments/assets/09981cfa-cdde-4a4c-8805-421f7b1f80ec" />
+<img width="199" height="691" alt="calc_time_tabel" src="https://github.com/user-attachments/assets/686563fb-9d71-4963-b486-a7192b6e3a85" />
+
 ## Citation
 ```bash
 @article{bridge2026,
