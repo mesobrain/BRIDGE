@@ -11,13 +11,13 @@ The multi-round registration results of all brain cell nuclei
 
 The table for calculating time is as follows
 <img width="624" height="164" alt="calc_tabel" src="https://github.com/user-attachments/assets/09981cfa-cdde-4a4c-8805-421f7b1f80ec" />
-<img width="199" height="691" alt="calc_time_tabel" src="https://github.com/user-attachments/assets/686563fb-9d71-4963-b486-a7192b6e3a85" />
+<img width="691" height="199" alt="calc_time_tabel" src="https://github.com/user-attachments/assets/f0164023-22f7-47e8-9d6f-1fceb224fbf9" />
 
 ## Citation
 ```bash
 @article{bridge2026,
   title={BRIDGE: Scalable and Topologically Plausible Whole-Brain Microscopic Image Registration via Hierarchical Hybrid Transformers},
-  author={Debin Xia, oE Key Laboratory of Brain-inspired Intelligent Perception and Cognition, Anhui Province Key Laboratory of Biomedical Imaging and Intelligent Processing, Institute of Artificial Intelligence of Hefei Comprehensive National Science Center, National Engineering Laboratory for Brain-inspired Intelligence Technology and Application, Hefei National Research Center for Physical Sciences at the Microscale, University of Science and Technology of China, Hefei, China},
+  author={Debin Xia, MoE Key Laboratory of Brain-inspired Intelligent Perception and Cognition, Anhui Province Key Laboratory of Biomedical Imaging and Intelligent Processing, Institute of Artificial Intelligence of Hefei Comprehensive National Science Center, National Engineering Laboratory for Brain-inspired Intelligence Technology and Application, Hefei National Research Center for Physical Sciences at the Microscale, University of Science and Technology of China, Hefei, China},
   journal={In submission},
   year={2026}
 }
