@@ -3,14 +3,16 @@
 BRIDGEA Scalable Registration Framework for Terabyte-Scale Multi-Round Whole-Brain MicroscopyThis is the official PyTorch implementation of BRIDGE, a deep learning framework designed for terabyte-scale volumetric microscopic image registration (e.g., VISoR imaging). BRIDGE combines SwinB-Net—a hybrid CNN-Transformer architecture with a hierarchical 3D Swin Transformer bottleneck and a sparse B-spline displacement head—to achieve sub-cellular precision while maintaining rigorous topological regularity.
 
 ## Results
-# Experimental results of the dataset：
+Experimental results of the dataset：
 <img width="1200" height="1100" alt="fig2" src="https://github.com/user-attachments/assets/d1cb7dab-8e2d-46f0-b172-2fdafc3fdb32" />
 
 The multi-round registration results of all brain cell nuclei
 <img width="1200" height="1100" alt="fig3" src="https://github.com/user-attachments/assets/3c53e587-90e4-4835-8e24-bc89550e7294" />
 
 The table for calculating time is as follows
+
 <img width="624" height="164" alt="calc_tabel" src="https://github.com/user-attachments/assets/09981cfa-cdde-4a4c-8805-421f7b1f80ec" />
+
 <img width="691" height="199" alt="calc_time_tabel" src="https://github.com/user-attachments/assets/f0164023-22f7-47e8-9d6f-1fceb224fbf9" />
 
 ## Citation
